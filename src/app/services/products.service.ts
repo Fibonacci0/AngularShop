@@ -16,7 +16,7 @@ export class ProductsService {
     return this.http.get<ProductsResponse>(api);
   }
 
-  delete(id: number): Observable<any> {
-    return this.http.delete(api + id);
-  }
+  delete(idToDelete: number): Observable<any> {
+    return this.http.delete(`${api}/${idToDelete}`);
+}
 }

@@ -34,7 +34,14 @@
         <button class="red" mat-icon-button (click)="openDialog(element.title, element.id)">
           <mat-icon>delete</mat-icon>
         </button>
+
       </td>
+      <td mat-cell *matCellDef="let element">
+
+      <button class="black" mat-icon-button (click)="openDialog(element.title, element.id)">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

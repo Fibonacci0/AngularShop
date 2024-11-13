@@ -41,26 +41,40 @@ export class ProductsTableComponent implements AfterViewInit {
 
   openDialog(productName: string, productId: number): void {
     const ref = this.dialog.open(ConfirmDialogComponent, {
-      width: '250px',
-      enterAnimationDuration: '50ms',
-      exitAnimationDuration: '50ms',
-      data: {
-        productName: productName,
-        productId: productId
-      }
+        width: '250px',
+        enterAnimationDuration: '50ms',
+        exitAnimationDuration: '50ms',
+        data: {
+            productName: productName,
+            productId: productId
+        }
     });
 
-    ref.afterClosed().subscribe(result => {
-      if (result) {
-        this.productsService.delete(result).subscribe(res => {
-          this.snackBar.open('Deleted succesfully', 'Dismiss', {
-            horizontalPosition: "center",
-            verticalPosition: "top",
-          });
-        })
-      }
+    ref.afterClosed().subscribe(idToDelete => {
+        // Check if the dialog result is true (confirmation)
+        if (idToDelete) {
+            // Call the delete method with the product ID
+            this.productsService.delete(idToDelete).subscribe(res => {
+                    // Remove the product from the local array
+                    this.dataSource.data = this.dataSource.data.filter(x => x.id !== idToDelete);
+                    
+                    // Show a success message after deletion
+                    this.snackBar.open('Deleted successfully', 'Dismiss', {
+                        horizontalPosition: "center",
+                        verticalPosition: "top",
+                    });
+                },
+                error => {
+                    // Handle error case
+                    this.snackBar.open('Failed to delete product', 'Dismiss', {
+                        horizontalPosition: "center",
+                        verticalPosition: "top",
+                    });
+                }
+            );
+        }
     });
-  }
+}
 }
 
 
